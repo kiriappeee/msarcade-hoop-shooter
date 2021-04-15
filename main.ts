@@ -173,6 +173,6 @@ playerSprite.z = 2
 playerSprite.setStayInScreen(true)
 // let textSprite = textsprite.create("")
 chances = 3
-chancesTextSprite = textsprite.create("Chances: " + ("" + chances))
+chancesTextSprite = textsprite.create("Chances: " + ("" + chances), 13, 10)
 chancesTextSprite.setPosition(35, 8)
 createHoop()
