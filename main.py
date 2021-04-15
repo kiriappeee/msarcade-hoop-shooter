@@ -125,11 +125,11 @@ def createHoop():
 
 def on_on_overlap(sprite, otherSprite):
     global scored
-    print(sprite.x)
-    print(otherSprite.x)
-    print(sprite.y)
-    print(otherSprite.y)
-    if (sprite.x < otherSprite.x + 3 or sprite.x > otherSprite.x - 13) and sprite.y < otherSprite.y - 11:
+    print("X position of ball: " + ("" + str(sprite.x)))
+    print("X position of hoop: " + ("" + str(otherSprite.x)))
+    print("Y position of ball: " + ("" + str(sprite.y)))
+    print("Y position of hoop: " + ("" + str(otherSprite.y)))
+    if (sprite.x < otherSprite.x + 3 or sprite.x > otherSprite.x - 13) and sprite.y < otherSprite.y - 7:
         info.change_score_by(1)
         sprite.set_position(otherSprite.x, sprite.y)
         sprite.set_velocity(0, -100)

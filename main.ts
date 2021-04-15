@@ -129,11 +129,11 @@ function createHoop() {
 
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function on_on_overlap(sprite: Sprite, otherSprite: Sprite) {
     
-    console.log(sprite.x)
-    console.log(otherSprite.x)
-    console.log(sprite.y)
-    console.log(otherSprite.y)
-    if ((sprite.x < otherSprite.x + 3 || sprite.x > otherSprite.x - 13) && sprite.y < otherSprite.y - 11) {
+    console.log("X position of ball: " + ("" + ("" + sprite.x)))
+    console.log("X position of hoop: " + ("" + ("" + otherSprite.x)))
+    console.log("Y position of ball: " + ("" + ("" + sprite.y)))
+    console.log("Y position of hoop: " + ("" + ("" + otherSprite.y)))
+    if ((sprite.x < otherSprite.x + 3 || sprite.x > otherSprite.x - 13) && sprite.y < otherSprite.y - 7) {
         info.changeScoreBy(1)
         sprite.setPosition(otherSprite.x, sprite.y)
         sprite.setVelocity(0, -100)
