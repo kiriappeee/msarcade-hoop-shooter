@@ -4,14 +4,7 @@ namespace SpriteKind {
     export const scoredBall = SpriteKind.create()
 }
 sprites.onDestroyed(SpriteKind.scoredBall, function (sprite) {
-    createHoop()
-    if (!(scored)) {
-        chances += -1
-        chancesTextSprite.setText("Chances: " + ("" + chances))
-    }
-    if (chances == 0) {
-        game.over(false)
-    }
+    evaluateEndGame()
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (sprites.allOfKind(SpriteKind.Projectile).length == 0 && sprites.allOfKind(SpriteKind.scoredBall).length == 0) {
@@ -132,14 +125,18 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function (sprite, othe
     }
     sprite.setKind(SpriteKind.scoredBall)
 })
-sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
+function evaluateEndGame () {
     createHoop()
     if (!(scored)) {
         chances += -1
+        chancesTextSprite.setText("Chances: " + ("" + chances))
     }
     if (chances == 0) {
         game.over(false)
     }
+}
+sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
+    evaluateEndGame()
 })
 let hoopSprite: Sprite = null
 let hoopStandSprite: Sprite = null
