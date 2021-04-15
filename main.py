@@ -5,31 +5,32 @@ class SpriteKind:
     scoredBall = SpriteKind.create()
 
 def on_a_pressed():
-    global ballSprite
-    ballSprite = sprites.create_projectile_from_sprite(img("""
-            . . . . . . . . . . . . . . . . 
-                    . . . . . . 4 4 4 4 . . . . . . 
-                    . . . . 4 4 4 5 5 4 4 4 . . . . 
-                    . . . 3 3 3 3 4 4 4 4 4 4 . . . 
-                    . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
-                    . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
-                    . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
-                    . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
-                    . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
-                    . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
-                    . . 4 2 3 3 2 4 4 4 4 4 2 4 . . 
-                    . . 4 2 2 3 2 2 4 4 4 2 4 4 . . 
-                    . . . 4 2 2 2 2 2 2 2 2 4 . . . 
-                    . . . . 4 4 2 2 2 2 4 4 . . . . 
-                    . . . . . . 4 4 4 4 . . . . . . 
-                    . . . . . . . . . . . . . . . .
-        """),
-        playerSprite,
-        0,
-        0)
-    ballSprite.set_velocity(80, -200)
-    ballSprite.ay = 500
-    ballSprite.z = 1
+    if(len(sprites.all_of_kind(SpriteKind.projectile))==0):
+        global ballSprite
+        ballSprite = sprites.create_projectile_from_sprite(img("""
+                . . . . . . . . . . . . . . . . 
+                        . . . . . . 4 4 4 4 . . . . . . 
+                        . . . . 4 4 4 5 5 4 4 4 . . . . 
+                        . . . 3 3 3 3 4 4 4 4 4 4 . . . 
+                        . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
+                        . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
+                        . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
+                        . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
+                        . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
+                        . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
+                        . . 4 2 3 3 2 4 4 4 4 4 2 4 . . 
+                        . . 4 2 2 3 2 2 4 4 4 2 4 4 . . 
+                        . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+                        . . . . 4 4 2 2 2 2 4 4 . . . . 
+                        . . . . . . 4 4 4 4 . . . . . . 
+                        . . . . . . . . . . . . . . . .
+            """),
+            playerSprite,
+            0,
+            0)
+        ballSprite.set_velocity(80, -200)
+        ballSprite.ay = 500
+        ballSprite.z = 1
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 
 def on_on_overlap(sprite, otherSprite):
