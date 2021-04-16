@@ -32,6 +32,11 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         scored = false
     }
 })
+info.onCountdownEnd(function () {
+    if (!(scored)) {
+        game.over(false)
+    }
+})
 function createHoop () {
     if (scored) {
         for (let value of sprites.allOfKind(SpriteKind.hoop)) {
@@ -110,6 +115,15 @@ function createHoop () {
         hoopSprite.z = 4
         hoopStandSprite.setPosition(randint(70, 150), randint(95, 50))
         hoopSprite.setPosition(hoopStandSprite.x - 4, hoopStandSprite.y - 10)
+        if (info.score() <= 3) {
+            info.startCountdown(10)
+        } else if (info.score() <= 10) {
+            info.startCountdown(5)
+        } else if (info.score() <= 20) {
+            info.startCountdown(3)
+        } else {
+            info.startCountdown(2)
+        }
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function (sprite, otherSprite) {
@@ -117,11 +131,12 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function (sprite, othe
     // print("X position of hoop: " + ("" + str(otherSprite.x)))
     // print("Y position of ball: " + ("" + str(sprite.y)))
     // print("Y position of hoop: " + ("" + str(otherSprite.y)))
-    if ((sprite.x < otherSprite.x + 3 || sprite.x > otherSprite.x - 13) && sprite.y < otherSprite.y - 7) {
+    if ((sprite.x < otherSprite.right + 0 || sprite.x > otherSprite.left - 0) && sprite.y < otherSprite.top - 0) {
         info.changeScoreBy(1)
         sprite.setPosition(otherSprite.x, sprite.y)
         sprite.setVelocity(0, -100)
         scored = true
+        info.stopCountdown()
     }
     sprite.setKind(SpriteKind.scoredBall)
 })
@@ -134,6 +149,7 @@ function evaluateEndGame () {
     if (chances == 0) {
         game.over(false)
     }
+    scored = false
 }
 sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
     evaluateEndGame()
@@ -171,5 +187,6 @@ playerSprite.setStayInScreen(true)
 // let textSprite = textsprite.create("")
 chances = 3
 chancesTextSprite = textsprite.create("Chances: " + ("" + chances), 13, 10)
-chancesTextSprite.setPosition(35, 8)
+chancesTextSprite.setPosition(35, 110)
 createHoop()
+scored = false
