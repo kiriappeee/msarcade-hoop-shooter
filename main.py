@@ -5,13 +5,7 @@ class SpriteKind:
     scoredBall = SpriteKind.create()
 
 def on_on_destroyed(sprite):
-    global chances
-    createHoop()
-    if not (scored):
-        chances += -1
-        chancesTextSprite.set_text("Chances: " + ("" + str(chances)))
-    if chances == 0:
-        game.over(False)
+    evaluateEndGame()
 sprites.on_destroyed(SpriteKind.scoredBall, on_on_destroyed)
 
 def on_a_pressed():
@@ -43,6 +37,11 @@ def on_a_pressed():
         ballSprite.z = 1
         scored = False
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
+
+def on_countdown_end():
+    if not (scored):
+        game.over(False)
+info.on_countdown_end(on_countdown_end)
 
 def createHoop():
     global hoopStandSprite, hoopSprite
@@ -123,28 +122,45 @@ def createHoop():
         hoopSprite.z = 4
         hoopStandSprite.set_position(randint(70, 150), randint(95, 50))
         hoopSprite.set_position(hoopStandSprite.x - 4, hoopStandSprite.y - 10)
+        if info.score() <= 3:
+            info.start_countdown(10)
+        elif info.score() <= 10:
+            info.start_countdown(5)
+        elif info.score() <= 20:
+            info.start_countdown(3)
+        else:
+            info.start_countdown(2)
 
 def on_on_overlap(sprite, otherSprite):
     global scored
-    # print("X position of ball: " + ("" + str(sprite.x)))
-    # print("X position of hoop: " + ("" + str(otherSprite.x)))
-    # print("Y position of ball: " + ("" + str(sprite.y)))
-    # print("Y position of hoop: " + ("" + str(otherSprite.y)))
-    if (sprite.x < otherSprite.x + 3 or sprite.x > otherSprite.x - 13) and sprite.y < otherSprite.y - 7:
+    print("X position of ball: " + ("" + str(sprite.x)))
+    print("Right position of ball: " + ("" + str(sprite.right)))
+    print("Left position of ball: " + ("" + str(sprite.left)))
+    print("Left position of hoop: " + ("" + str(otherSprite.left)))
+    print("Right position of hoop: " + ("" + str(otherSprite.right)))
+    print("Y position of ball: " + ("" + str(sprite.y)))
+    print("Y position of hoop: " + ("" + str(otherSprite.y)))
+    if sprite.x < otherSprite.right - 4 and sprite.x > otherSprite.left / 4 and sprite.y < otherSprite.top - 0:
         info.change_score_by(1)
         sprite.set_position(otherSprite.x, sprite.y)
         sprite.set_velocity(0, -100)
         scored = True
+        info.stop_countdown()
     sprite.set_kind(SpriteKind.scoredBall)
 sprites.on_overlap(SpriteKind.projectile, SpriteKind.hoop, on_on_overlap)
 
-def on_on_destroyed2(sprite):
-    global chances
+def evaluateEndGame():
+    global chances, scored
     createHoop()
     if not (scored):
         chances += -1
+        chancesTextSprite.set_text("Chances: " + ("" + str(chances)))
     if chances == 0:
         game.over(False)
+    scored = False
+
+def on_on_destroyed2(sprite):
+    evaluateEndGame()
 sprites.on_destroyed(SpriteKind.projectile, on_on_destroyed2)
 
 hoopSprite: Sprite = None
@@ -180,6 +196,7 @@ playerSprite.z = 2
 playerSprite.set_stay_in_screen(True)
 # let textSprite = textsprite.create("")
 chances = 3
-chancesTextSprite = textsprite.create("Chances: " + ("" + str(chances)))
-chancesTextSprite.set_position(35, 8)
+chancesTextSprite = textsprite.create("Chances: " + ("" + str(chances)), 13, 10)
+chancesTextSprite.set_position(35, 110)
 createHoop()
+scored = False
