@@ -1,5 +1,5 @@
 {
-    "name": "hoop-shooter-alpha-2",
+    "name": "hoop-shooter",
     "description": "",
     "dependencies": {
         "device": "*",
