@@ -33,7 +33,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 info.onCountdownEnd(function () {
-    if (!(scored)) {
+    timerCompleted = true
+    if (sprites.allOfKind(SpriteKind.Projectile).length == 0 && !(scored)) {
         game.over(false)
     }
 })
@@ -124,6 +125,7 @@ function createHoop () {
         } else {
             info.startCountdown(2)
         }
+        timerCompleted = false
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function (sprite, otherSprite) {
@@ -145,6 +147,9 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.hoop, function (sprite, othe
 })
 function evaluateEndGame () {
     createHoop()
+    if (timerCompleted && !(scored)) {
+        game.over(false)
+    }
     if (!(scored)) {
         chances += -1
         chancesTextSprite.setText("Chances: " + ("" + chances))
@@ -159,6 +164,7 @@ sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
 })
 let hoopSprite: Sprite = null
 let hoopStandSprite: Sprite = null
+let timerCompleted = false
 let ballSprite: Sprite = null
 let chancesTextSprite: TextSprite = null
 let chances = 0
